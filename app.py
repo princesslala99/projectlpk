@@ -4,7 +4,7 @@ import pandas as pd
 
 st.set_page_config
 {
-    page_title=("🧪 Aplikasi Analisis Regresi dan Evaluasi Kinerja Metode",
+    page_title==("🧪 Aplikasi Analisis Regresi dan Evaluasi Kinerja Metode",
     layout=="wide")
 }
 
