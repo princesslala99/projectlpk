@@ -87,7 +87,14 @@ if show_reg:
 
         desc = "Luar Biasa Sempurna!" if r2 > 0.99 else ("Sangat Baik!" if r2 > 0.95 else ("Cukup Baik" if r2 > 0.90 else "Perlu Perbaikan"))
         st.info(f"Status Korelasi: {desc}")
-
+if show_reg:
+    if not reg_ready:
+        st.error("Data tidak valid: jumlah x dan y tidak sama/minimal 2.")
+    else:
+        slope, intercept, r2 = linear_regression(x, y)
+        st.session_state['slope'] = slope        # <----- simpan ke session_state
+        st.session_state['intercept'] = intercept
+        # ...lanjutkan kode Anda
         # Tampilkan Grafik
         # Data + garis regresi: pakai DataFrame multi-column
         chart_df = pd.DataFrame({'Konsentrasi': x, 'Absorbansi': y})
