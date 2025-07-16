@@ -3,10 +3,10 @@ import numpy as np
 import pandas as pd
 
 st.set_page_config
-{
-    page_title==("🧪 Aplikasi Analisis Regresi dan Evaluasi Kinerja Metode",
-    layout=="wide")
-}
+(
+    page_title="🧪 Aplikasi Analisis Regresi dan Evaluasi Kinerja Metode",
+    layout="wide"
+)
 
 st.title("🧪 Aplikasi Analisis Regresi & Evaluasi Kinerja Metode")
 st.caption("Lab Digital Pintar Spektrofotometri – Streamlit Edition")
