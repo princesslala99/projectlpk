@@ -3,11 +3,11 @@ import numpy as np
 import pandas as pd
 
 st.set_page_config(
-    page_title="🧪 Aplikasi Analisis Regresi dan Evaluasi Kinerja Metode",
+    page_title="🧪 Website Kalkulator Analisis Presisi dan Akurasi",
     layout="wide"
 )
 
-st.title("🧪 Aplikasi Analisis Regresi & Evaluasi Kinerja Metode")
+st.title("🧪 Website Kalkulator Analisis Presisi dan Akurasi")
 st.caption("Lab Digital Pintar Spektrofotometri – Streamlit Edition")
 
 # --- Fungsi Utility Aman ---
