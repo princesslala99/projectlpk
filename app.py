@@ -259,4 +259,15 @@ elif menu == "✅ Evaluasi Akurasi":
         else:
             recovery = ((val_measured - val_awal) / val_added) * 100
             emoji, status = info_akurasi(recovery)
-            st.success(f"{emoji} %
+            st.success(f"{emoji} %Recovery = {recovery:.2f}%")
+            st.caption(f"Status Akurasi: {status}  \nFormula: ((C-spike terukur - C-awal) / C-ditambahkan) × 100%")
+
+st.markdown(
+    """
+---
+<div style='text-align:center;color:gray;font-size:13px;line-height:1.5;'>
+Smart Chemistry Analysis — Streamlit • Made with ❤
+</div>
+""",
+    unsafe_allow_html=True,
+)
