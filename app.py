@@ -7,6 +7,98 @@ st.set_page_config(
     page_title="🧪 Website Kalkulator Analisis Presisi dan Akurasi",
     layout="wide"
 )
+st.markdown(
+    """
+    <style>
+    /* Gradasi pastel glassmorphism background */
+    .stApp {
+        background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+        min-height: 100vh;
+        background-attachment: fixed;
+    }
+    /* Center semua konten */
+    .block-container {
+        margin-top: 1.2rem;
+        background: rgba(255,255,255,0.65);
+        border-radius: 2.5rem;
+        box-shadow: 0 17px 48px 0 rgba(245, 158, 11, 0.12),
+                    0 1.5px 7px 0 #fda08570;
+        padding: 2rem 2.5rem 2.5rem 2.5rem;
+        backdrop-filter: blur(2px);
+    }
+    /* Teks judul lebih imut dan bold */
+    h1, h2, h3 {
+        color: #ff7e5f;
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 8px #fff9;
+    }
+    /* Sidebar warna orange pastel */
+    .css-1d391kg, .css-13sdm1q {
+        background: linear-gradient(122deg, #ffeae2 0%, #fffde4 100%)!important;
+        border-right: 2px dashed #faaa66 !important;
+        box-shadow: 2px 0 14px #fff3e2a2;
+    }
+    /* Hiasan bubble random */
+    .stApp:after {
+        content: '';
+        position: fixed;
+        width: 130vw;
+        height: 130vh;
+        top: -10vh;
+        left: -18vw;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.25;
+        background: radial-gradient(circle at 50% 70%, #fff7ae 0 8vw, transparent 11vw),
+                    radial-gradient(circle at 80% 30%, #e9c3fd 0 7vw, transparent 17vw),
+                    radial-gradient(circle at 20% 10%, #fca5f1 0 5vw, transparent 10vw),
+                    radial-gradient(circle at 80% 95%, #b9dcff 0 6vw, transparent 10vw);
+        animation: bgfloat 18s infinite alternate ease-in-out;
+    }
+    @keyframes bgfloat {
+        to { transform: translateY(40px) scaleX(1.01) scaleY(1.03); }
+    }
+    /* Emoji animasi */
+    .stMarkdown span[style*='font-size:3rem'] {
+        display:inline-block;
+        animation: emoji-bounce 1.3s infinite alternate;
+        filter: drop-shadow(0 0 5px #fffadd);
+    }
+    @keyframes emoji-bounce {
+        to { transform: translateY(-10px) scale(1.12); }
+    }
+    /* Latar input bak glass */
+    textarea, input[type='text'], input[type='number'] {
+        border-radius: 14px !important;
+        background: rgba(255,255,255,0.78) !important;
+        border: 1.5px solid #ffbe76 !important;
+        box-shadow: 0 2.5px 16px #fff0da99, 0 .5px 2px #ffecd2a6;
+    }
+    /* Tombol lebih colorful */
+    button, .stButton button {
+        font-weight: 700;
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        border-radius: 14px !important;
+        background: linear-gradient(95deg, #ffecd2 10%, #fcb69f 100%) !important;
+        color: #8d42a3 !important;
+        border: 2.5px solid #fbb034 !important;
+        box-shadow: 0 2px 13px #ffecd2a1;
+        transition: all 160ms;
+    }
+    button:hover, .stButton button:hover {
+        background: linear-gradient(105deg, #fcb69f 0%, #fdde85 100%) !important;
+        color: #cb158c !important;
+        border-color: #c469ec !important;
+    }
+    /* Table highlight */
+    [data-testid='stDataFrame'] {
+        background: rgba(255,255,255,0.89)!important;
+        border-radius: 14px !important;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
 # COVER: Judul & Deskripsi
 with st.container():
     st.markdown(
