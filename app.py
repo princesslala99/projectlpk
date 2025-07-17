@@ -7,57 +7,6 @@ st.set_page_config(
     page_title="🧪 Website Kalkulator Analisis Presisi dan Akurasi",
     layout="wide"
 )
-# Tambahkan di paling atas sebelum/mengawali kode utama
-st.markdown(
-    """
-    <style>
-        body {
-            background: linear-gradient(120deg, #FFDEE9 0%, #B5FFFC 100%);
-        }
-        .stApp {
-            background: linear-gradient(135deg, #ffe8ec 0%, #b1f0ff 100%) !important;
-            background-attachment: fixed;
-        }
-        /* Container Card Lucu */
-        .block-container {
-            border-radius: 32px;
-            background: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 8px 32px 0 rgba(100, 100, 200, 0.08);
-            padding: 2rem 2rem;
-            margin-top: 1.5rem;
-        }
-        /* Custom Judul */
-        h1, h2, h3 {
-            color: #a855f7 !important;
-            text-shadow: 0 2px 8px #fbbf24a2;
-        }
-        /* Pewarnaan emoji di judul */
-        .stMarkdown span[style*="font-size:3rem"] {
-            filter: drop-shadow(0 0 6px #f5a623);
-        }
-        /* Bubbles */
-        .stApp:before {
-            content: '';
-            position: fixed;
-            width: 300vw;
-            height: 300vh;
-            left: -100vw;
-            top: -100vh;
-            background: repeating-radial-gradient(circle at 15% 40%, #ffdde1b8 0, #fffde4 250px, transparent 600px),
-                        repeating-radial-gradient(circle at 80% 65%, #b5fffc82 0, #ffc8ff 200px, transparent 400px);
-            opacity: 0.33;
-            pointer-events: none;
-            z-index: 0;
-            animation: floatbg 24s linear infinite alternate;
-        }
-        @keyframes floatbg {
-            from { transform: translateY(0px);}
-            to { transform: translateY(60px);}
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 # COVER: Judul & Deskripsi
 with st.container():
     st.markdown(
