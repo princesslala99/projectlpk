@@ -265,7 +265,9 @@ st.markdown(
     """
 ---
 <div style='text-align:center;color:gray;font-size:13px;line-height:1.5;'>
-Smart Chemistry Analysis — Streamlit • Made with ❤
+Web App by Kelompok 10 Kelas 1A
+Analisis Kimia
+Politeknik AKA Bogor
 </div>
 """,
     unsafe_allow_html=True,
