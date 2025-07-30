@@ -321,7 +321,7 @@ elif menu == "🧮 Hitung Konsentrasi & Presisi":
 
                     mean_, std_ = np.mean(c_terukur), np.std(c_terukur, ddof=0)
                     st.markdown(
-                        f"<p style='color:#34495e;font-weight:bold;'>📊 Rata-rata: {mean_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Standar Deviasi: {std_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Jumlah Sampel: {len(c_terukur)}</p>",
+                        f"<p style='color:#FFFFF;font-weight:bold;'>📊 Rata-rata: {mean_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Standar Deviasi: {std_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Jumlah Sampel: {len(c_terukur)}</p>",
                         unsafe_allow_html=True,
                     )
 
