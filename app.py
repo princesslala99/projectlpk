@@ -365,7 +365,7 @@ elif menu == "✅ Evaluasi Akurasi":
 # FOOTER
 st.markdown(
     """
-    <div style='text-align:left;color:gray;font-size:13px;line-height:1.6; margin-top: 2rem;'>
+    <div style='text-align:left;color:#FFFFF;font-size:13px;line-height:1.6; margin-top: 2rem;'>
         <p>Web App by Kelompok 10 Kelas 1A</p>
         <p>ALIVIA AZZAHRA - 2460317</p>
         <p>KARINA RAHMA YULITHA - 2460398</p>
