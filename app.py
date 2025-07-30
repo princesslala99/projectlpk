@@ -2,66 +2,230 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import base64
+import time
 
-# Fungsi untuk set background image dari file lokal dengan base64 encode
-def add_bg_from_local(image_file):
-    with open(image_file, "rb") as f:
-        data = f.read()
-        encoded = base64.b64encode(data).decode()
-    st.markdown(
-        f"""
-         <style>
-         .stApp {{
-             background-image: url("data:image/jpg;base64,{encoded}");
-             background-size: cover;
-             background-attachment: fixed;
-             background-position: center;
-         }}
+st.markdown("""
+<style>
+/* Sidebar container */
+[data-testid="stSidebar"] {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    color: white;
+}
 
-         /* Black box hanya untuk blok utama yang penting di konten utama */
-         [data-testid="stMarkdownContainer"], .stAlert, .stHeader, .stSubheader, .stTitle,
-         .stSuccess, .stInfo, .stWarning, .stError, .stCaption {{
-             background-color: rgba(0,0,0,0.6) !important;
-             border-radius: 12px;
-             padding: 1.2rem !important;
-             color: white !important;
-             margin-bottom: 1rem;
-         }}
+/* Container radio */
+div[data-baseweb="radio"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
-         /* Sidebar tanpa black box, default transparan dan style bawaan */
-         section[data-testid="stSidebar"] .block-container {{
-             background-color: transparent !important;
-             color: inherit !important;
-             padding: 0 !important;
-             border-radius: 0 !important;
-             box-shadow: none !important;
-         }}
+/* Hide radio input */
+div[data-baseweb="radio"] input[type="radio"] {
+    display: none !important;
+}
 
-         /* Hilangkan shadow di dataframe agar tampil konsisten */
-         .css-1d391kg, .css-1n76uvr, .css-1cpxqw2, .stDataFrame, .esravye2  {{
-             box-shadow: none !important;
-         }}
-         </style>
-         """,
-        unsafe_allow_html=True
-    )
+/* Style radio label */
+label[data-baseweb="radio"] {
+    display: flex;
+    align-items: center;
+    background-color: #1e293b;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    border: 1.5px solid #334155;
+    color: #e2e8f0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.25s ease-in-out;
+    box-shadow: inset 0 0 0 0 transparent;
+    min-height: 3.2rem;
+}
 
-# Panggil fungsi background, ganti path sesuai file Anda
-add_bg_from_local("images/background_avif.jpg")
+/* Hover efek */
+label[data-baseweb="radio"]:hover {
+    background-color: #334155;
+    transform: scale(1.03);
+    cursor: pointer;
+    border-color: #64748b;
+}
 
-# --- KONFIGURASI HALAMAN ---
+/* Active radio item */
+div[data-baseweb="radio"] > div[aria-checked="true"] label {
+    background-color: #0ea5e9 !important;
+    border-color: #38bdf8 !important;
+    color: white !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.5);
+}
+
+/* Jaga jarak dan rapi */
+label svg {
+    margin-right: 0.6rem;
+    min-width: 1rem;
+    max-height: 1rem;
+}
+
+/* Tekstnya tetap rata kiri */
+label[data-baseweb="radio"] > div {
+    text-align: left;
+    flex-grow: 1;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+    /* Background gradient & text */
+    .stApp {
+        background: linear-gradient(to right, #141e30, #243b55);
+        color: white;
+    }
+
+    /* Tombol efek */
+    div.stButton > button {
+        background: #1f6feb;
+        color: white;
+        padding: 0.6em 1.2em;
+        font-weight: bold;
+        border-radius: 12px;
+        border: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    div.stButton > button:hover {
+        background: #1a4fcc;
+        transform: scale(1.05);
+    }
+
+    /* Judul dan teks lainnya */
+    .stMarkdown, .stText, .stTitle, .stHeader, .stSubheader {
+        color: white !important;
+    }
+
+    /* Table & dataframe style */
+    .stDataFrame, .stTable {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
+st.markdown("""
+<style>
+/* Fade in efek saat load */
+.stApp {
+    animation: fadeIn 1.5s ease-in;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Tombol animasi glow saat hover */
+button[kind="primary"] {
+    transition: 0.3s ease;
+    box-shadow: 0 0 0px transparent;
+}
+button[kind="primary"]:hover {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Efek float untuk icon judul */
+.black-box span {
+    display: inline-block;
+    animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Transisi halus di elemen teks */
+.black-box, .stMarkdown, .stText, .stTitle, .stHeader, .stSubheader {
+    transition: all 0.3s ease-in-out;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Fade in saat load halaman */
+.stApp {
+    animation: fadeIn 1.2s ease-in;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom tombol */
+div.stButton > button {
+    background-color: #1f77b4;
+    color: white;
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+div.stButton > button:hover {
+    background-color: #105f99;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+div.stButton > button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Loading spinner (gunakan bersama tombol) */
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
+# --- COVER & SIDEBAR MENU ---
 st.set_page_config(
     page_title="🧪 Website Kalkulator Analisis Presisi dan Akurasi",
     layout="wide"
 )
-
-# --- HEADER BERANDA ---
+# COVER: Judul & Deskripsi
 with st.container():
     st.markdown(
         """
-        <div style='width:100%;text-align:center; margin-bottom:1rem; font-size:3rem;'>🧪</div>
-        <h1 style='text-align:center;'>Website Kalkulator Analisis Presisi & Akurasi</h1>
-        <p style='text-align:center; max-width:600px; margin:0 auto;'>
+        <div class="black-box" style='width:100%;text-align:center; margin-bottom:1rem;'>
+        <span style='font-size:3rem;'>🧪</span>
+        </div>
+        <h1 class="black-box" style='text-align:center;'>Website Kalkulator Analisis Presisi & Akurasi</h1>
+        <p class="black-box" style='text-align:center; max-width:600px; margin:0 auto;'>
             <em>Lab Digital Pintar Spektrofotometri – Streamlit Edition</em><br>
             Hitung regresi linier, presisi (%RPD/%RSD), dan akurasi (%Recovery) dengan mudah, berbasis input absorbansi dan konsentrasi.
         </p>
@@ -69,14 +233,14 @@ with st.container():
     )
     st.markdown("---")
 
-# --- MENU NAVIGASI SIDEBAR ---
+# --- SIDEBAR MENU ---
 menu = st.sidebar.radio(
     "Menu Navigasi",
     ["🏠 Beranda", "📈 Regresi & Grafik", "🧮 Hitung Konsentrasi & Presisi", "✅ Evaluasi Akurasi"],
     index=0
 )
 
-### UTILITAS ###
+# --- UTILITIES ---
 def parse_numbers(text):
     text = text.strip()
     if not text:
@@ -153,7 +317,7 @@ def info_akurasi(val):
         e, s = "🔴", "Akurasi Perlu Diperbaiki"
     return e, s
 
-# Inisialisasi session state regresi linear
+# --- INISIALISASI SESSION STATE REGRESI ---
 if "slope" not in st.session_state:
     st.session_state.slope = None
 if "intercept" not in st.session_state:
@@ -163,22 +327,22 @@ if "r2" not in st.session_state:
 if "reg_ready" not in st.session_state:
     st.session_state.reg_ready = False
 
-# --- MENU CONTENT ---
+# --- MENU: HOME / COVER ---
 if menu == "🏠 Beranda":
     st.subheader("Aplikasi Kalkulator Laboratorium Digital")
     st.markdown("""
-    **Langkah kerja aplikasi:**  
-    1. Masukkan data standar pada menu **Regresi & Grafik** untuk mendapatkan persamaan linear kalibrasi.
-    2. Lanjut ke **Hitung Konsentrasi & Presisi** untuk menghitung nilai konsentrasi sampel dan uji presisi.
-    3. Gunakan menu **Evaluasi Akurasi** untuk menghitung akurasi metode (%Recovery) berdasarkan uji spike.
+    Langkah kerja aplikasi:  
+    1. Masukkan data standar pada menu Regresi & Grafik untuk mendapatkan persamaan linear kalibrasi.
+    2. Lanjut ke Hitung Konsentrasi & Presisi untuk menghitung nilai konsentrasi sampel dan uji presisi.
+    3. Gunakan menu Evaluasi Akurasi untuk menghitung akurasi metode (%Recovery) berdasarkan uji spike.
     """)
     st.info(
         "Tips: Lakukan input data standar dan klik tombol di setiap langkah. Seluruh fitur bekerja tanpa perlu refresh halaman!"
     )
     st.success("Gunakan sidebar di kiri layar untuk memilih fitur utama.")
-
+# --- MENU: REGRESI & GRAFIK ---
 elif menu == "📈 Regresi & Grafik":
-    st.markdown("<h2 style='color:#FFFFF;'>📈 Step 1: Regresi & Grafik Kalibrasi</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#1abc9c;'>📈 Step 1: Regresi & Grafik Kalibrasi</h2>", unsafe_allow_html=True)
 
     st.markdown("""
         <style>
@@ -261,9 +425,10 @@ elif menu == "📈 Regresi & Grafik":
         if st.session_state.get("reg_ready", False):
             st.info("✅ Persamaan regresi sudah tersedia. Lanjutkan ke menu berikutnya untuk hitung sampel.")
 
+
 # --- MENU: HITUNG KONSENTRASI & PRESISI ---
 elif menu == "🧮 Hitung Konsentrasi & Presisi":
-    st.markdown("<h2 style='color:#FFFFF;'>🧮 Step 2: Multi Sampel Absorbansi & Hitung Konsentrasi</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#1abc9c;'>🧮 Step 2: Multi Sampel Absorbansi & Hitung Konsentrasi</h2>", unsafe_allow_html=True)
 
     if not st.session_state.get("reg_ready", False) or st.session_state.slope is None:
         st.warning(
@@ -321,7 +486,7 @@ elif menu == "🧮 Hitung Konsentrasi & Presisi":
 
                     mean_, std_ = np.mean(c_terukur), np.std(c_terukur, ddof=0)
                     st.markdown(
-                        f"<p style='color:#FFFFF;font-weight:bold;'>📊 Rata-rata: {mean_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Standar Deviasi: {std_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Jumlah Sampel: {len(c_terukur)}</p>",
+                        f"<p style='color:#34495e;font-weight:bold;'>📊 Rata-rata: {mean_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Standar Deviasi: {std_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Jumlah Sampel: {len(c_terukur)}</p>",
                         unsafe_allow_html=True,
                     )
 
@@ -332,40 +497,70 @@ elif menu == "🧮 Hitung Konsentrasi & Presisi":
                     else:
                         st.info("Isi minimal 2 data konsentrasi untuk hitung presisi.")
 
+
+# --- MENU: EVALUASI AKURASI (%RECOVERY) ---
 elif menu == "✅ Evaluasi Akurasi":
-    st.header("Step 3: Evaluasi Akurasi (%Recovery)")
+    st.markdown("<h2 style='color:#1abc9c;'>✅ Step 3: Evaluasi Akurasi (%Recovery)</h2>", unsafe_allow_html=True)
 
-    k1, k2, k3 = st.columns(3)
-    with k1:
+    col1, col2, col3 = st.columns(3)
+    with col1:
         s_measured = st.text_input("🧪 C-spike terukur (ppm)", "0")
-    with k2:
+    with col2:
         s_added = st.text_input("➕ C-spike ditambahkan (ppm)", "0")
-    with k3:
+    with col3:
         s_awal = st.text_input("🔬 C-sampel awal (ppm)", "0")
+
+    # Tambahkan gaya tombol dengan animasi hover
+    st.markdown("""
+        <style>
+        div.stButton > button:first-child {
+            background-color: #e67e22;
+            color: white;
+            border-radius: 8px;
+            padding: 0.5em 1em;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+        }
+        div.stButton > button:first-child:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     if st.button("✅ Hitung %Recovery"):
-        def tofloat(x):
-            try:
-                return float(x)
-            except Exception:
-                return None
+        with st.spinner("⏳ Menghitung akurasi sampel..."):
+            def tofloat(x):
+                try:
+                    return float(x)
+                except Exception:
+                    return None
 
-        val_measured = tofloat(s_measured)
-        val_added = tofloat(s_added)
-        val_awal = tofloat(s_awal)
-        if None in [val_measured, val_added, val_awal]:
-            st.error("Semua input harus berupa angka (dan desimal gunakan titik).")
-        elif val_added == 0:
-            st.error("C-spike ditambahkan harus > 0.")
-        else:
-            recovery = ((val_measured - val_awal) / val_added) * 100
-            emoji, status = info_akurasi(recovery)
+            val_measured = tofloat(s_measured)
+            val_added = tofloat(s_added)
+            val_awal = tofloat(s_awal)
+
+            if None in [val_measured, val_added, val_awal]:
+                st.error("❌ Semua input harus berupa angka (gunakan titik untuk desimal).")
+            elif val_added == 0:
+                st.error("⚠ C-spike ditambahkan harus lebih dari 0.")
+            else:
+                recovery = ((val_measured - val_awal) / val_added) * 100
+                emoji, status = info_akurasi(recovery)
             st.success(f"{emoji} %Recovery = {recovery:.2f}%")
-            st.caption(f"Status Akurasi: {status}  \nFormula: ((C-spike terukur - C-awal) / C-ditambahkan) × 100%")
+            if 85 <= recovery <= 115:
+                st.markdown("<span style='color:#2ecc71;font-weight:bold;'>✅ Hasilnya Bagus! Akurasi pengukuran dalam rentang ideal (85–115%).</span>", unsafe_allow_html=True)
+            elif recovery < 85:
+                st.markdown("<span style='color:#f39c12;font-weight:bold;'>⚠ %Recovery terlalu rendah. Kemungkinan ada kehilangan analit saat pengujian.</span>", unsafe_allow_html=True)
+            else:
+                st.markdown("<span style='color:#e74c3c;font-weight:bold;'>⚠ %Recovery terlalu tinggi. Bisa jadi ada kontaminasi atau kesalahan pengukuran.</span>", unsafe_allow_html=True)
+            st.caption("📐 Formula: ((C-spike terukur - C-awal) / C-ditambahkan) × 100%")
 
-# FOOTER
+
 st.markdown(
     """
-    <div style='text-align:left;color:#FFFFF;font-size:13px;line-height:1.6; margin-top: 2rem;'>
+    <div class="black-box" style='text-align:left;color:gray;font-size:13px;line-height:1.6; margin-top: 2rem;'>
         <p>Web App by Kelompok 10 Kelas 1A</p>
         <p>ALIVIA AZZAHRA - 2460317</p>
         <p>KARINA RAHMA YULITHA - 2460398</p>
