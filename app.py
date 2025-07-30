@@ -261,6 +261,77 @@ elif menu == "📈 Regresi & Grafik":
         if st.session_state.get("reg_ready", False):
             st.info("✅ Persamaan regresi sudah tersedia. Lanjutkan ke menu berikutnya untuk hitung sampel.")
 
+# --- MENU: HITUNG KONSENTRASI & PRESISI ---
+elif menu == "🧮 Hitung Konsentrasi & Presisi":
+    st.markdown("<h2 style='color:#1abc9c;'>🧮 Step 2: Multi Sampel Absorbansi & Hitung Konsentrasi</h2>", unsafe_allow_html=True)
+
+    if not st.session_state.get("reg_ready", False) or st.session_state.slope is None:
+        st.warning(
+            "⚠ Lakukan perhitungan regresi terlebih dahulu pada menu Regresi & Grafik, agar persamaan regresi tersedia!"
+        )
+    else:
+        abs_samp = st.text_area(
+            "📥 Absorbansi Sampel (misal: 0.250, 0.255, 0.248)", "0.250, 0.255, 0.248"
+        )
+
+        button_css = """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #3498db;
+            color: white;
+            border-radius: 8px;
+            padding: 0.5em 1em;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+        }
+        div.stButton > button:first-child:hover {
+            background-color: #2ecc71;
+            transform: scale(1.03);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
+        }
+        </style>
+        """
+        st.markdown(button_css, unsafe_allow_html=True)
+
+        if st.button("🧪 Hitung Semua Konsentrasi Sampel"):
+            with st.spinner("⏳ Menghitung konsentrasi dan presisi..."):
+                ys = parse_numbers(abs_samp)
+                if ys is None:
+                    st.error("Absorbansi sampel hanya boleh angka dan koma.")
+                elif len(ys) < 1:
+                    st.error("Isi minimal 1 data absorbansi sampel.")
+                else:
+                    slope = st.session_state.slope
+                    intercept = st.session_state.intercept
+                    c_terukur = (ys - intercept) / slope if slope != 0 else np.zeros_like(ys)
+                    df = pd.DataFrame(
+                        {
+                            "Sampel": [f"Sampel {i+1}" for i in range(len(ys))],
+                            "Absorbansi": ys,
+                            "C-terukur (ppm)": c_terukur,
+                        }
+                    )
+
+                    st.success("✅ Perhitungan selesai!")
+
+                    st.dataframe(
+                        df.style.format({"Absorbansi": "{:.4f}", "C-terukur (ppm)": "{:.4f}"}),
+                        use_container_width=True
+                    )
+
+                    mean_, std_ = np.mean(c_terukur), np.std(c_terukur, ddof=0)
+                    st.markdown(
+                        f"<p style='color:#34495e;font-weight:bold;'>📊 Rata-rata: {mean_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Standar Deviasi: {std_:.4f} ppm &nbsp;&nbsp;|&nbsp;&nbsp; Jumlah Sampel: {len(c_terukur)}</p>",
+                        unsafe_allow_html=True,
+                    )
+
+                    prec_val, prec_typ = precision(c_terukur)
+                    if prec_val is not None:
+                        emoji, status = info_precision(prec_val, prec_typ)
+                        st.info(f"{emoji} {prec_typ}: {prec_val:.2f}% — {status}")
+                    else:
+                        st.info("Isi minimal 2 data konsentrasi untuk hitung presisi.")
+
 elif menu == "✅ Evaluasi Akurasi":
     st.header("Step 3: Evaluasi Akurasi (%Recovery)")
 
