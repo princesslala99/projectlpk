@@ -195,7 +195,7 @@ elif menu == "📈 Regresi & Grafik":
     """, unsafe_allow_html=True)
 
     st.header("📈 Analisis Regresi Linier & Grafik Kalibrasi")
-    st.caption(<style='color:#FFFFF;'>"Masukkan data konsentrasi dan absorbansi untuk membuat kurva kalibrasi dan persamaan regresi.")
+    st.caption("Masukkan data konsentrasi dan absorbansi untuk membuat kurva kalibrasi dan persamaan regresi.")
 
     c1, c2 = st.columns(2)
     with c1:
@@ -230,7 +230,7 @@ elif menu == "📈 Regresi & Grafik":
 
                     pers_eq = f"y = {slope:.4f} x + {intercept:.4f}"
                     st.success(f"✨ Persamaan Regresi: {pers_eq}")
-                    st.caption(<style='color:#FFFFF;'>f"R² = {r2:.4f}")
+                    st.caption(f"R² = {r2:.4f}")
 
                     desc = (
                         "Luar Biasa Sempurna! 🎯" if r2 > 0.99
