@@ -6,6 +6,72 @@ import time
 
 st.markdown("""
 <style>
+/* GLOBAL dark mode fix */
+html, body, [data-testid="stAppViewContainer"], .stApp {
+    background-color: #0f172a !important;
+    color: white !important;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+
+/* WIDGET UMUM */
+label, div, span, input, textarea, select {
+    color: white !important;
+}
+
+/* INPUT BOX */
+input, textarea {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: white !important;
+}
+
+/* BUTTON */
+button {
+    background-color: #1f6feb !important;
+    color: white !important;
+    border-radius: 12px;
+    border: none;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #105f99 !important;
+    transform: scale(1.05);
+}
+
+/* RADIO & CHECKBOX */
+[data-baseweb="radio"], [data-baseweb="checkbox"] {
+    color: white !important;
+}
+
+/* TABEL */
+.stDataFrame, .stTable {
+    background-color: rgba(255,255,255,0.05) !important;
+    color: white !important;
+}
+/* Patch bagian putih di atas: toolbar / header wrapper */
+div[class^="st-emotion-cache-1j22a0y"] {
+    background-color: #0f172a !important;
+}
+[data-testid="stToolbar"] {
+    background-color: #0f172a !important;
+    color: white !important;
+    border-bottom: 1px solid #1e293b;
+    box-shadow: none !important;
+}
+[data-testid="stHeader"] {
+    background-color: #0f172a !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
 /* Sidebar container */
 [data-testid="stSidebar"] {
     background: linear-gradient(145deg, #1e293b, #0f172a);
@@ -20,7 +86,7 @@ div[data-baseweb="radio"] {
 }
 
 /* Hide radio input */
-div[data-baseweb="radio"] input[type="radio"] {
+div[data-baseweb="radio"] input[type="radio"] {c
     display: none !important;
 }
 
