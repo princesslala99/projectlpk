@@ -47,7 +47,7 @@ def add_bg_from_local(image_file):
     )
 
 # Panggil fungsi background, ganti path sesuai file Anda
-add_bg_from_local("images/background_avif.jpg")
+add_bg_from_local("images/bg.jpg")
 
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(
