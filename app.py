@@ -1,6 +1,40 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import base64
+
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as f:
+        data = f.read()
+        encoded = base64.b64encode(data).decode()
+    st.markdown(
+        f"""
+         <style>
+         .stApp {{
+             background-image: url("data:image/jpg;base64,{encoded}");
+             background-size: cover;
+             background-attachment: fixed;
+             background-position: center;
+         }}
+
+         /* Kotak transparan hitam di belakang teks */
+         .black-box {{
+             background-color: rgba(0, 0, 0, 0.6);
+             padding: 1.2rem;
+             border-radius: 12px;
+             color: white;
+             margin-bottom: 1rem;
+         }}
+
+         /* Ubah warna teks default menjadi putih */
+         .stMarkdown, .stText, .stTitle, .stHeader, .stSubheader, .stDataFrame, .stTable {{
+             color: white !important;
+         }}
+         </style>
+         """,
+        unsafe_allow_html=True
+    )
+add_bg_from_local("images/background_avif.jpg")
 
 # --- COVER & SIDEBAR MENU ---
 st.set_page_config(
@@ -11,11 +45,11 @@ st.set_page_config(
 with st.container():
     st.markdown(
         """
-        <div style='width:100%;text-align:center; margin-bottom:1rem;'>
+        <div class="black-box" style='width:100%;text-align:center; margin-bottom:1rem;'>
         <span style='font-size:3rem;'>🧪</span>
         </div>
-        <h1 style='text-align:center;'>Website Kalkulator Analisis Presisi & Akurasi</h1>
-        <p style='text-align:center; max-width:600px; margin:0 auto;'>
+        <h1 class="black-box" style='text-align:center;'>Website Kalkulator Analisis Presisi & Akurasi</h1>
+        <p class="black-box" style='text-align:center; max-width:600px; margin:0 auto;'>
             <em>Lab Digital Pintar Spektrofotometri – Streamlit Edition</em><br>
             Hitung regresi linier, presisi (%RPD/%RSD), dan akurasi (%Recovery) dengan mudah, berbasis input absorbansi dan konsentrasi.
         </p>
@@ -130,7 +164,6 @@ if menu == "🏠 Beranda":
         "Tips: Lakukan input data standar dan klik tombol di setiap langkah. Seluruh fitur bekerja tanpa perlu refresh halaman!"
     )
     st.success("Gunakan sidebar di kiri layar untuk memilih fitur utama.")
-
 # --- MENU: REGRESI & GRAFIK ---
 elif menu == "📈 Regresi & Grafik":
     st.header("Step 1: Input Data Standar (Regresi Linier)")
@@ -263,12 +296,14 @@ elif menu == "✅ Evaluasi Akurasi":
 
 st.markdown(
     """
----
-<div style='text-align:center;color:gray;font-size:13px;line-height:1.5;'>
-Web App by Kelompok 10 Kelas 1A
-Analisis Kimia
-Politeknik AKA Bogor
-</div>
-""",
-    unsafe_allow_html=True,
+    <div class="black-box" style='text-align:left;color:gray;font-size:13px;line-height:1.6; margin-top: 2rem;'>
+        <p>Web App by Kelompok 10 Kelas 1A</p>
+        <p>ALIVIA AZZAHRA - 2460317</p>
+        <p>KARINA RAHMA YULITHA - 2460398</p>
+        <p>NAILA NASYWA FADHILAH - 2460454</p>
+        <p>REVANSHA M. ALAM F. - 2460495</p>
+        <p>ZASKIA ADYA RACHMA - 2460545</p>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
