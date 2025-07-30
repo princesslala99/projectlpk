@@ -178,7 +178,7 @@ if menu == "🏠 Beranda":
     st.success("Gunakan sidebar di kiri layar untuk memilih fitur utama.")
 
 elif menu == "📈 Regresi & Grafik":
-    st.markdown("<h2 style='color:#1abc9c;'>📈 Step 1: Regresi & Grafik Kalibrasi</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#FFFFF;'>📈 Step 1: Regresi & Grafik Kalibrasi</h2>", unsafe_allow_html=True)
 
     st.markdown("""
         <style>
@@ -263,7 +263,7 @@ elif menu == "📈 Regresi & Grafik":
 
 # --- MENU: HITUNG KONSENTRASI & PRESISI ---
 elif menu == "🧮 Hitung Konsentrasi & Presisi":
-    st.markdown("<h2 style='color:#1abc9c;'>🧮 Step 2: Multi Sampel Absorbansi & Hitung Konsentrasi</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#FFFFF;'>🧮 Step 2: Multi Sampel Absorbansi & Hitung Konsentrasi</h2>", unsafe_allow_html=True)
 
     if not st.session_state.get("reg_ready", False) or st.session_state.slope is None:
         st.warning(
