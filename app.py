@@ -178,7 +178,24 @@ if menu == "🏠 Beranda":
     st.success("Gunakan sidebar di kiri layar untuk memilih fitur utama.")
 
 elif menu == "📈 Regresi & Grafik":
-    st.header("Step 1: Input Data Standar (Regresi Linier)")
+    st.markdown("<h2 style='color:#1abc9c;'>📈 Step 1: Regresi & Grafik Kalibrasi</h2>", unsafe_allow_html=True)
+
+    st.markdown("""
+        <style>
+        button {
+            transition: all 0.2s ease-in-out;
+            transform: scale(1);
+        }
+        button:hover {
+            transform: scale(1.05);
+            background-color: #1d4ed8 !important;
+            color: white !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.header("📈 Analisis Regresi Linier & Grafik Kalibrasi")
+    st.caption("Masukkan data konsentrasi dan absorbansi untuk membuat kurva kalibrasi dan persamaan regresi.")
 
     c1, c2 = st.columns(2)
     with c1:
@@ -186,93 +203,63 @@ elif menu == "📈 Regresi & Grafik":
     with c2:
         abs_str = st.text_area("📊 Absorbansi", "0.005, 0.105, 0.205, 0.305, 0.405, 0.505")
 
-    if st.button("⚗ Buat Grafik & Persamaan Regresi"):
-        x = parse_numbers(conc_str)
-        y = parse_numbers(abs_str)
+    if st.button("⚗ Proses Regresi & Tampilkan Grafik"):
+        with st.spinner("Menghitung regresi... mohon tunggu 🙏"):
+            x = parse_numbers(conc_str)
+            y = parse_numbers(abs_str)
 
-        if x is None or y is None:
-            st.error("Input hanya boleh angka dan koma. Periksa kembali format data.")
-            st.session_state.reg_ready = False
-        elif len(x) < 2 or len(y) < 2:
-            st.error("Minimal dua data konsentrasi dan absorbansi harus terisi.")
-            st.session_state.reg_ready = False
-        elif len(x) != len(y):
-            st.error(f"Jumlah data tidak sama: Konsentrasi: {len(x)}, Absorbansi: {len(y)}")
-            st.session_state.reg_ready = False
-        else:
-            slope, intercept, r2 = linear_regression(x, y)
-            if None in [slope, intercept, r2]:
-                st.error("Data tidak bisa di-regresi (cek nilai input Anda, hindari semua data sama).")
+            if x is None or y is None:
+                st.error("❌ Input hanya boleh angka dan koma. Periksa kembali format data.")
+                st.session_state.reg_ready = False
+            elif len(x) < 2 or len(y) < 2:
+                st.error("⚠ Minimal dua data konsentrasi dan absorbansi harus terisi.")
+                st.session_state.reg_ready = False
+            elif len(x) != len(y):
+                st.error(f"📉 Jumlah data tidak sama: Konsentrasi: {len(x)}, Absorbansi: {len(y)}")
                 st.session_state.reg_ready = False
             else:
-                st.session_state.slope = slope
-                st.session_state.intercept = intercept
-                st.session_state.r2 = r2
-                st.session_state.reg_ready = True
-                pers_eq = f"y = {slope:.4f} x + {intercept:.4f}"
-                st.success(f"✨ Persamaan Regresi: {pers_eq}")
-                st.caption(f"R² = {r2:.4f}")
+                slope, intercept, r2 = linear_regression(x, y)
+                if None in [slope, intercept, r2]:
+                    st.error("❌ Data tidak bisa di-regresi. Cek nilai input Anda, hindari semua data sama.")
+                    st.session_state.reg_ready = False
+                else:
+                    st.session_state.slope = slope
+                    st.session_state.intercept = intercept
+                    st.session_state.r2 = r2
+                    st.session_state.reg_ready = True
 
-                desc = (
-                    "Luar Biasa Sempurna!"
-                    if r2 > 0.99
-                    else ("Sangat Baik!" if r2 > 0.95 else ("Cukup Baik" if r2 > 0.90 else "Perlu Perbaikan"))
-                )
-                st.info(f"Status Korelasi: {desc}")
+                    pers_eq = f"y = {slope:.4f} x + {intercept:.4f}"
+                    st.success(f"✨ Persamaan Regresi: {pers_eq}")
+                    st.caption(f"R² = {r2:.4f}")
 
-                chart_df = pd.DataFrame({"Konsentrasi": x, "Absorbansi": y})
-                st.subheader("📈 Grafik Kurva Kalibrasi (standar)")
-                st.line_chart(chart_df.rename(columns={"Konsentrasi": "index"}).set_index("index"))
+                    desc = (
+                        "Luar Biasa Sempurna! 🎯" if r2 > 0.99
+                        else ("Sangat Baik! 👍" if r2 > 0.95 else ("Cukup Baik 💡" if r2 > 0.90 else "Perlu Perbaikan 🔧"))
+                    )
+                    st.info(f"Status Korelasi: {desc}")
 
-                # Grafik prediksi regresi
-                pred_df = pd.DataFrame({"Konsentrasi": np.linspace(x.min(), x.max(), 100)})
-                pred_df["Absorbansi (regresi)"] = slope * pred_df["Konsentrasi"] + intercept
-                plot_df = pd.DataFrame({"Absorbansi": y}, index=x)
-                plot_df_pred = pd.DataFrame({"Absorbansi (regresi)": pred_df["Absorbansi (regresi)"]}, index=pred_df["Konsentrasi"])
-                st.line_chart(pd.concat([plot_df, plot_df_pred], axis=1))
+                    import altair as alt
+                    chart_df = pd.DataFrame({"Konsentrasi": x, "Absorbansi": y})
+                    st.subheader("📊 Grafik Interaktif Kurva Kalibrasi")
+                    base = alt.Chart(chart_df).mark_circle(size=80).encode(
+                        x="Konsentrasi",
+                        y="Absorbansi",
+                        tooltip=["Konsentrasi", "Absorbansi"]
+                    ).interactive()
+
+                    reg_line = alt.Chart(pd.DataFrame({
+                        "Konsentrasi": np.linspace(x.min(), x.max(), 100)
+                    })).mark_line(color='orange').encode(
+                        x="Konsentrasi",
+                        y=alt.Y("y:Q", title="Absorbansi (regresi)")
+                    ).transform_calculate(
+                        y=f"{slope:.4f} * datum.Konsentrasi + {intercept:.4f}"
+                    )
+
+                    st.altair_chart(base + reg_line, use_container_width=True)
     else:
         if st.session_state.get("reg_ready", False):
-            st.info("Persamaan regresi sudah tersedia. Lanjutkan ke menu berikutnya untuk perhitungan sampel.")
-
-elif menu == "🧮 Hitung Konsentrasi & Presisi":
-    st.header("Step 2: Multi Sampel Absorbansi & Hitung Konsentrasi")
-
-    if not st.session_state.get("reg_ready", False) or st.session_state.slope is None:
-        st.warning(
-            "Lakukan perhitungan regresi terlebih dahulu pada menu **Regresi & Grafik**, agar persamaan regresi tersedia!"
-        )
-    else:
-        abs_samp = st.text_area(
-            "Absorbansi Sampel (misal: 0.250, 0.255, 0.248)", "0.250, 0.255, 0.248"
-        )
-        if st.button("🧪 Hitung Semua Konsentrasi Sampel"):
-            ys = parse_numbers(abs_samp)
-            if ys is None:
-                st.error("Absorbansi sampel hanya boleh angka dan koma.")
-            elif len(ys) < 1:
-                st.error("Isi minimal 1 data absorbansi sampel.")
-            else:
-                slope = st.session_state.slope
-                intercept = st.session_state.intercept
-                c_terukur = (ys - intercept) / slope if slope != 0 else np.zeros_like(ys)
-                df = pd.DataFrame(
-                    {
-                        "Sampel": [f"Sampel {i+1}" for i in range(len(ys))],
-                        "Absorbansi": ys,
-                        "C-terukur (ppm)": c_terukur,
-                    }
-                )
-                st.dataframe(df.style.format({"Absorbansi": "{:.4f}", "C-terukur (ppm)": "{:.4f}"}), use_container_width=True)
-
-                mean_, std_ = np.mean(c_terukur), np.std(c_terukur, ddof=0)
-                st.success(f"Rata-rata: {mean_:.4f} ppm | Standar Deviasi: {std_:.4f} ppm | Jumlah Sampel: {len(c_terukur)}")
-
-                prec_val, prec_typ = precision(c_terukur)
-                if prec_val is not None:
-                    emoji, status = info_precision(prec_val, prec_typ)
-                    st.info(f"{emoji} {prec_typ}: {prec_val:.2f}% — {status}")
-                else:
-                    st.info("Isi minimal 2 data konsentrasi untuk hitung presisi.")
+            st.info("✅ Persamaan regresi sudah tersedia. Lanjutkan ke menu berikutnya untuk hitung sampel.")
 
 elif menu == "✅ Evaluasi Akurasi":
     st.header("Step 3: Evaluasi Akurasi (%Recovery)")
